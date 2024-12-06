@@ -20,5 +20,17 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # Register controllers as services and tag them for use
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Storage\InMemoryStorage:
+        shared: true # Ensure it remains the same instance across the application
+        arguments:
+            $filePath: '%kernel.project_dir%/request.json'
+
+    App\Storage\StorageEngineInterface: '@App\Storage\InMemoryStorage'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
